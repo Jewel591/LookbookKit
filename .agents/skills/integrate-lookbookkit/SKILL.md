@@ -16,7 +16,7 @@ description: 仅在宿主主动要按参考 App 对齐页面/Sheet 画布时加�
 
 - 宿主**已经决定**要把某页对齐 Cursor / Grok 等参考 App 的页面或 sheet 画布
 - 宿主里已经出现 `lookbook` 前缀，要改接线或排错
-- 排查已接入后的 Form 背景、sheet 与页面同色、导航栏与画布脱节，或 `.cursor` 页上残留 drop shadow
+- 排查已接入后的 Form 背景、sheet 与页面同色、导航栏与画布脱节、`.cursor` 页上残留 drop shadow，或导航标题仍是 Large Title / `.inlineLarge`
 
 ⛔ 不要因为「这是新 App」或「别的 kit 都接了」就自动接入。
 
@@ -31,8 +31,8 @@ description: 仅在宿主主动要按参考 App 对齐页面/Sheet 画布时加�
    `https://github.com/Jewel591/LookbookKit`，`from:` / Xcode *Up to Next Major Version*。
    ⛔ 不用 `exact`、`branch`、`revision`。试验仓可用本地 path；产品 main 不要长期挂 path。
 7. ⛔ 不要把产品 hex 抄进宿主视图。新参考 App = 新 `Look` preset；新视觉轴 = `Look` 上新属性并填齐所有 preset。
-8. 页内小卡片不是 token，也不要为 Cursor 加 shadow 轴：参考实现几乎是 0-shadow，层次靠页灰衬白。宿主用系统填充或白即可。
-9. 跟 `.cursor` 时先跑 `scripts/lookbook-shadow-candidates.py`。open 命中默认删掉 `.shadow(`。觉得某一处必须留阴影时，⛔ 不要自己打豁免——先升级问 Ivens，他确认这一处之后才写 `// lookbook-shadow-exempt: <具体理由>`（同行或上一行）。空理由不算豁免。⛔ 不要做 `.lookbookElevation()`。脚本不是硬闸。
+8. 页内小卡片不是 token，也不要为 Cursor 加 shadow 轴或 type ramp：参考实现几乎是 0-shadow，层次靠页灰衬白；标题停在 `.inline`，由画布注入 `toolbarTitleDisplayMode`。宿主用系统填充或白即可。⛔ 不要做 `.lookbookTitle()`。
+9. 跟 `.cursor` 时先跑 `scripts/lookbook-shadow-candidates.py` 和 `scripts/lookbook-title-candidates.py`。影子 open 命中默认删掉 `.shadow(`。标题候选（页内 `.title` / `.title2` / `.largeTitle` 却没有 `.navigationTitle`，或两者抢槽，或宿主自己写了 title display mode）由 agent 一条条看，不自动改产品隐喻页。觉得某一处必须留阴影或页内大标题时，⛔ 不要自己打豁免——先升级问 Ivens，他确认这一处之后才写 `// lookbook-shadow-exempt:` / `// lookbook-title-exempt: <具体理由>`（同行或上一行）。空理由不算豁免。⛔ 不要做 `.lookbookElevation()` / `.lookbookTitle()`。脚本不是硬闸。宿主也不要再写 `.toolbarTitleDisplayMode` / `.navigationBarTitleDisplayMode`，那会盖掉 look。
 10. ⛔ 不用 UIAppearance，也不碰私有 list decoration view。
 11. `scripts/lookbook-surface-candidates.py` 只报候选，不是硬闸。
 

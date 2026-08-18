@@ -59,8 +59,8 @@ Do not copy product hex values into views. Prefer `Form` over `List` when the lo
 | Modifier | Required? | Where | What it does |
 |---|---|---|---|
 | `.lookbook(_:)` | Yes, once | Scene root | Sets the product look, grouped `FormStyle`, and environment |
-| `.lookbookSurface(.page)` | Yes, on pages | Page `ScrollView` / `Form` / detail canvas | Paints the page canvas from the current look |
-| `.lookbookSurface(.sheet)` | Yes, on sheets | Presented sheet content | Paints the sheet canvas and presentation background |
+| `.lookbookSurface(.page)` | Yes, on pages | Page `ScrollView` / `Form` / detail canvas | Paints the page canvas and applies the look's toolbar title display mode |
+| `.lookbookSurface(.sheet)` | Yes, on sheets | Presented sheet content | Paints the sheet canvas and presentation background, and applies the title display mode |
 | `.lookbookSectionHeader()` | Optional | `Section` header `Text` | Header font and secondary color from the look |
 | `.lookbookSymbol()` | Optional | `Label` / `Image` | Symbol weight and scale from the look |
 | `.lookbookToolbarBackground()` | Optional | A view that owns the nav bar | Matches the toolbar to the current page or sheet canvas |
@@ -79,23 +79,24 @@ Form {
 }
 .lookbookSurface(.page)
 .lookbookToolbarBackground()
+// Do not also set .toolbarTitleDisplayMode — the canvas owns it.
 ```
 
 There are no kit wrappers for `Form`, `List`, `Section`, or rows. If a modifier is not in this table, it does not exist; do not invent product-named ones such as `.lookbookCursorChrome()`.
 
 ## Looks
 
-| Look | Page | Sheet | Type |
-|---|---|---|---|
-| `.cursor` | `#F7F7F7` / `#141414` | `#FCFCFC` / `#191919` | Semibold headers and symbols |
-| `.grok` | `#F5F5F5` / `#202022` | Same as page | Semibold headers and symbols |
-| `.systemGrouped` | `#F2F2F7` / `#1C1C1E` | Same as page | Regular headers and symbols |
+| Look | Page | Sheet | Type | Nav title |
+|---|---|---|---|---|
+| `.cursor` | `#F7F7F7` / `#141414` | `#FCFCFC` / `#191919` | Semibold headers and symbols | `.inline` |
+| `.grok` | `#F5F5F5` / `#202022` | Same as page | Semibold headers and symbols | `.automatic` |
+| `.systemGrouped` | `#F2F2F7` / `#1C1C1E` | Same as page | Regular headers and symbols | `.automatic` |
 
 `.groupedBright` is the old name for `.grok`. `Look.presets` is the switchable list.
 
 A new reference app is a new preset that fills every token on `Look`. A new visual axis is a new property on `Look`, filled for every existing preset.
 
-In-page chips are not a look token. Cursor Mobile uses essentially no drop shadow, so do not add chip colors or shadow axes to the kit.
+In-page chips are not a look token. Cursor Mobile uses essentially no drop shadow and never uses Large Title, so do not add chip colors, shadow axes, or a type ramp. The compact title is `Look.toolbarTitleDisplayMode`. Do not also set `.toolbarTitleDisplayMode` on the host — the canvas already applies it.
 
 ## Inventory
 
@@ -105,14 +106,15 @@ Every injection site uses the `lookbook` prefix:
 rg -n --type swift '\.lookbook(Surface|SectionHeader|Symbol|ToolbarBackground)?\('
 ```
 
-To find canvases that may still need `.lookbookSurface`, and drop-shadow sites that fight a Cursor look:
+To find canvases that may still need `.lookbookSurface`, drop-shadow sites that fight a Cursor look, and page titles still painted in the body instead of `.navigationTitle`:
 
 ```sh
 python3 scripts/lookbook-surface-candidates.py /path/to/HostApp
 python3 scripts/lookbook-shadow-candidates.py /path/to/HostApp
+python3 scripts/lookbook-title-candidates.py /path/to/HostApp
 ```
 
-Both scripts print candidates only. They cannot prove a line is a page versus a chip, or that a shadow is decorative, and they are not a hard gate. `.lookbook(.cursor)` does not turn off shadows in the subtree.
+These scripts print candidates only. They cannot prove a line is a page versus a chip, that a shadow is decorative, or that a body `Text` is the page title, and they are not a hard gate. `.lookbook(.cursor)` does not turn off shadows in the subtree, and it cannot move a painted title into the navigation bar.
 
 Only Ivens can keep a shadow. After he confirms a specific site, put a reason on the same line or the line above. The shadow scan still prints it, under Exempted:
 
