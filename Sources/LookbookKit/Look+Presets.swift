@@ -14,6 +14,7 @@ public extension Look {
     )
 
     /// Cursor Mobile canvases: page `#F7F7F7` / `#141414`, sheet `#FCFCFC` / `#191919`.
+    /// In-page chips are not a kit color; Cursor is effectively 0-shadow.
     static let cursor = Look(
         id: "cursor",
         pageBackground: Color(light: (247, 247, 247), dark: (20, 20, 20)),

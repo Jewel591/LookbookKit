@@ -11,6 +11,8 @@ public enum LookbookSurface: Sendable, Equatable {
 /// Add a property here only when a new visual axis appears, and fill it for
 /// every existing preset (use the page canvas or the system value as default).
 /// Add a product by creating another static preset that fills every property.
+/// In-page chips and drop shadows are not axes: Cursor elevates with page gray
+/// against white and uses essentially no shadow.
 public struct Look: Sendable {
     public var id: String
     public var pageBackground: Color

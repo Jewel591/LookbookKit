@@ -95,6 +95,8 @@ There are no kit wrappers for `Form`, `List`, `Section`, or rows. If a modifier 
 
 A new reference app is a new preset that fills every token on `Look`. A new visual axis is a new property on `Look`, filled for every existing preset.
 
+In-page chips are not a look token. Cursor Mobile uses essentially no drop shadow, so do not add chip colors or shadow axes to the kit.
+
 ## Inventory
 
 Every injection site uses the `lookbook` prefix:
@@ -103,10 +105,19 @@ Every injection site uses the `lookbook` prefix:
 rg -n --type swift '\.lookbook(Surface|SectionHeader|Symbol|ToolbarBackground)?\('
 ```
 
-To find canvases that may still need `.lookbookSurface`:
+To find canvases that may still need `.lookbookSurface`, and drop-shadow sites that fight a Cursor look:
 
 ```sh
 python3 scripts/lookbook-surface-candidates.py /path/to/HostApp
+python3 scripts/lookbook-shadow-candidates.py /path/to/HostApp
 ```
 
-The script prints candidates only. It cannot prove a line is a page versus a chip, and it is not a hard gate.
+Both scripts print candidates only. They cannot prove a line is a page versus a chip, or that a shadow is decorative, and they are not a hard gate. `.lookbook(.cursor)` does not turn off shadows in the subtree.
+
+Only Ivens can keep a shadow. After he confirms a specific site, put a reason on the same line or the line above. The shadow scan still prints it, under Exempted:
+
+```swift
+// lookbook-shadow-exempt: lift the badge off a photo
+Image(photo)
+    .shadow(radius: 8)
+```
