@@ -1,6 +1,8 @@
 # LookbookKit
 
-Personal SwiftUI look presets for matching a reference app's surface details.
+Optional beta SwiftUI look presets for matching a reference app's surface details.
+
+This is not a house default. Hosts opt in. Do not add a playbook lint that requires adoption.
 
 - Do not wrap `Form`, `List`, `Section`, or rows into kit components.
 - Host pages keep writing native SwiftUI.

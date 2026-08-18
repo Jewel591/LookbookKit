@@ -1,6 +1,8 @@
 # LookbookKit
 
-Personal look presets for SwiftUI. Not a component library.
+Optional beta look presets for SwiftUI. Not a component library, and not a required house kit.
+
+Hosts opt in when they want a page or sheet to match a reference app. APIs may still change. There is no playbook lint that checks whether an app adopted this package.
 
 Host pages keep writing native `Form`, `Section`, `Label`, and `Image`. The kit only injects surface tokens through `lookbook*` modifiers.
 
