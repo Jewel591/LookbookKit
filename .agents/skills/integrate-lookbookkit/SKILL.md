@@ -57,3 +57,10 @@ ScrollView { … }
 ```
 
 可选：`Section` header 上 `.lookbookSectionHeader()`，`Label` / `Image` 上 `.lookbookSymbol()`，拥有导航栏的画布上 `.lookbookToolbarBackground()`。
+
+## 宿主测试边界
+
+- Lookbook 是视觉修饰层；宿主通常无需为 Kit 单独写 XCTest。只在宿主确有自己的 surface 分类或条件映射时，测试那张映射表。
+- modifier 的渲染细节、默认 token、系统 appearance 边界属于 LookbookKit；不要在每个 App 复制断言，也不要增加 snapshot / golden image 测试。
+- 不在 XCTest 中扫描 `project.pbxproj`、import 或 modifier 字符串；静态装配交给对应 playbook lint / candidate 脚本，最终视觉由本地运行验证。
+- 若两个 App 需要相同的分类 helper，先把稳定语义移入 Kit，而不是建立跨 Kit 的通用 TestSupport。
