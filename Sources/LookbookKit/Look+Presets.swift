@@ -14,13 +14,16 @@ public extension Look {
     )
 
     /// Cursor Mobile canvases: page `#F7F7F7` / `#141414`, sheet `#FCFCFC` / `#191919`.
+    /// In-page chips are not a kit color; Cursor is effectively 0-shadow.
+    /// Titles stay `.inline` — no Large Title / `.inlineLarge` jump.
     static let cursor = Look(
         id: "cursor",
         pageBackground: Color(light: (247, 247, 247), dark: (20, 20, 20)),
         sheetBackground: Color(light: (252, 252, 252), dark: (25, 25, 25)),
         sectionHeaderFont: .subheadline.weight(.semibold),
         symbolWeight: .semibold,
-        symbolScale: .large
+        symbolScale: .large,
+        toolbarTitleDisplayMode: .inline
     )
 
     /// Grok settings sheet: slightly brighter than system grouped gray.

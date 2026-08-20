@@ -6,11 +6,23 @@ public enum LookbookSurface: Sendable, Equatable {
     case sheet
 }
 
+/// Toolbar title scale for a look. SwiftUI's `ToolbarTitleDisplayMode` is not
+/// `Sendable`, so presets store this and the canvas maps it at the call site.
+public enum LookbookToolbarTitleDisplayMode: Sendable, Equatable {
+    /// System default, including Large Title where the destination uses one.
+    case automatic
+    /// Compact bar title. Cursor never jumps to Large Title.
+    case inline
+}
+
 /// A named bag of surface tokens shared by every product look.
 ///
 /// Add a property here only when a new visual axis appears, and fill it for
 /// every existing preset (use the page canvas or the system value as default).
 /// Add a product by creating another static preset that fills every property.
+/// In-page chips and drop shadows are not axes: Cursor elevates with page gray
+/// against white and uses essentially no shadow. Title scale is the toolbar
+/// display mode, not a type ramp — hosts keep writing native `Text` fonts.
 public struct Look: Sendable {
     public var id: String
     public var pageBackground: Color
@@ -18,6 +30,7 @@ public struct Look: Sendable {
     public var sectionHeaderFont: Font
     public var symbolWeight: Font.Weight
     public var symbolScale: Image.Scale
+    public var toolbarTitleDisplayMode: LookbookToolbarTitleDisplayMode
 
     public init(
         id: String,
@@ -25,7 +38,8 @@ public struct Look: Sendable {
         sheetBackground: Color? = nil,
         sectionHeaderFont: Font,
         symbolWeight: Font.Weight,
-        symbolScale: Image.Scale
+        symbolScale: Image.Scale,
+        toolbarTitleDisplayMode: LookbookToolbarTitleDisplayMode = .automatic
     ) {
         self.id = id
         self.pageBackground = pageBackground
@@ -33,6 +47,7 @@ public struct Look: Sendable {
         self.sectionHeaderFont = sectionHeaderFont
         self.symbolWeight = symbolWeight
         self.symbolScale = symbolScale
+        self.toolbarTitleDisplayMode = toolbarTitleDisplayMode
     }
 
     public func canvas(for surface: LookbookSurface) -> Color {

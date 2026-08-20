@@ -18,6 +18,18 @@ private struct LookbookStyledForm: View {
     }
 }
 
+struct LookbookToolbarTitleModifier: ViewModifier {
+    let mode: LookbookToolbarTitleDisplayMode
+
+    func body(content: Content) -> some View {
+        #if os(iOS)
+        content.toolbarTitleDisplayMode(mode == .inline ? .inline : .automatic)
+        #else
+        content
+        #endif
+    }
+}
+
 struct LookbookCanvasModifier: ViewModifier {
     let look: Look
     let surface: LookbookSurface
@@ -29,5 +41,6 @@ struct LookbookCanvasModifier: ViewModifier {
                 look.canvas(for: surface)
                     .ignoresSafeArea()
             }
+            .modifier(LookbookToolbarTitleModifier(mode: look.toolbarTitleDisplayMode))
     }
 }

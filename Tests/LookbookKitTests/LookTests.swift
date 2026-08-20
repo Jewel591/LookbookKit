@@ -25,6 +25,13 @@ func grokUsesHeavierTypeAndSymbolsThanSystemGrouped() {
 }
 
 @Test
+func cursorKeepsToolbarTitlesInline() {
+    #expect(Look.cursor.toolbarTitleDisplayMode == .inline)
+    #expect(Look.systemGrouped.toolbarTitleDisplayMode == .automatic)
+    #expect(Look.grok.toolbarTitleDisplayMode == .automatic)
+}
+
+@Test
 func looksCompareByIdentityOnly() {
     let copy = Look(
         id: Look.cursor.id,
